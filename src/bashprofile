@@ -1,0 +1,49 @@
+export PATH=/Users/jsuchy/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:~/.lein/bin:/usr/local/share/npm/bin:$PATH
+export EDITOR=vim
+
+alias be="bundle exec"
+alias fucking="sudo"
+alias gd="git diff -w"
+alias gti="git"
+alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --enable-memory-info"
+alias java8='export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)'
+alias java7='export JAVA_HOME=$(/usr/libexec/java_home -v 1.7)'
+
+# MySQL
+alias stop_mysql="launchctl unload ~/Library/LaunchAgents/com.mysql.mysqld.plist"
+alias start_mysql="launchctl load ~/Library/LaunchAgents/com.mysql.mysqld.plist"
+
+export HISTCONTROL=erasedups
+shopt -s histappend
+
+git_branch () {
+  git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+BLACK="\[\033[0;38m\]"
+RED="\[\033[0;31m\]"
+RED_BOLD="\[\033[01;31m\]"
+GREEN="\[\033[0;32m\]"
+
+export PS1="$BLACK[$RED\h $GREEN\w$RED_BOLD \$(git_branch)$BLACK] "
+
+# rm will just move to ~/.Trash
+function rm () {
+  local path
+  for path in "$@"; do
+    # ignore any arguments
+    if [[ "$path" = -* ]]; then :
+    else
+      local dst=${path##*/}
+      # append the time if necessary
+      while [ -e ~/.Trash/"$dst" ]; do
+        dst="$dst "$(date +%H-%M-%S)
+      done
+      mv "$path" ~/.Trash/"$dst"
+    fi
+  done
+}
+
+if [ -f `brew --prefix`/etc/bash_completion ]; then
+  . `brew --prefix`/etc/bash_completion
+fi

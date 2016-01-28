@@ -1,13 +1,11 @@
 #! /usr/bin/env sh
 
+brew install git tmux vim wget rbenv ruby-build lua
 brew install caskroom/cask/brew-cask
+brew link openssl --force
 
-brew install git tmux zsh emacs 
-brew install neovim/neovim/neovim --HEAD
+brew tap caskroom/versions
 
-brew cask install mjolnir slack flux firefox google-chrome iterm2 vagrant 1password
-
-curl https://raw.githubusercontent.com/djl/vcprompt/v1.0.1/bin/vcprompt > \
-  /usr/local/bin/vcprompt
-
-sudo chmod +x /usr/local/bin/vcprompt
+brew cask install java6 java7 java intellij-idea-ce
+brew cask install firefox google-chrome
+brew cask install alfred slack mjolnir iterm2 vagrant 1password virtualbox skitch mailplane cloak caffeine

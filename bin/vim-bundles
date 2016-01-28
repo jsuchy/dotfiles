@@ -5,12 +5,14 @@ require 'fileutils'
 
 module VimBundleInstall
   REPOS = [
-   "troydm/easytree.vim",
+   "scrooloose/nerdcommenter.git",
+   "scrooloose/nerdtree.git",
+   "tpope/vim-fugitive.git",
+   "vim-ruby/vim-ruby.git",
    "kien/ctrlp.vim",
-   "tpope/vim-fugitive",
-   "tomtom/tcomment_vim",
-   "jonathanfilip/vim-lucius",
-   "bling/vim-airline"
+   "benmills/vimux",
+   "altercation/vim-colors-solarized.git",
+   "pgr0ss/vimux-ruby-test.git"
   ]
 
   def self.install
@@ -18,7 +20,8 @@ module VimBundleInstall
   end
 
   def self.clone(repo)
-    FileUtils.cd(File.join(FileUtils.pwd, "src", "nvim", "bundle")) do |dir|
+    FileUtils.mkdir_p(File.join(FileUtils.pwd, "src", "vim", "bundle"))
+    FileUtils.cd(File.join(FileUtils.pwd, "src", "vim", "bundle")) do |dir|
       system("git clone https://github.com/#{repo} 2> /dev/null && \
               echo 'cloned #{repo}' || echo 'skipped #{repo}'")
 

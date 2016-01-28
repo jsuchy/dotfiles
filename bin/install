@@ -5,15 +5,12 @@ require 'fileutils'
 
 class DotfileInstall
   TO_INSTALL = [
-    "emacs.d",
     "gemrc",
     "gitconfig",
     "githelpers",
-    "mjolnir",
-    "nvimrc",
+    "vimrc",
     "tmux.conf",
-    "nvim",
-    "zshenv"
+    "vim"
   ]
 
   attr_accessor :options

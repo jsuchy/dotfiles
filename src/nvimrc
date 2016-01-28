@@ -1,90 +1,146 @@
-" load pathogen stuff
-execute pathogen#infect()
+call pathogen#infect()
+call pathogen#helptags()
+set nocompatible
+syntax on
 filetype plugin indent on
 
-syntax on           " enable syntax highlighting
-set number          " enable line numbers
-set colorcolumn=80  " highlight column 80
+set dir=/tmp//
+set hlsearch
+set lazyredraw
+set number
+set ruler
+set scrolloff=5
+set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+set wrap
 
-set incsearch       " enable incremental search
-set hlsearch        " enable search highlighting
-set ignorecase      " case-insensitive searches
-set smartcase       " use smart-case for searches
+let g:solarized_termcolors=256
+set background=light
+colorscheme solarized
 
-set hidden          " allow 'background'ing of unwritten buffers
-set backspace=2     " allow 'backspace' to cross line breaks, indent, etc
-set nofoldenable    " disable code folding
-set nobackup        " don't backup files
-set nowritebackup   " don't create backups on write
-set noswapfile      " don't use swapfiles
+let mapleader=","
 
-set winwidth=90     " minimum width (columns) for active pane
-set winminwidth=15  " minimum width (columns) for inactive pane
-set scrolloff=5     " offset scroll to show at least 5 lines around cursor
+" no arrow keys in normal and insert modes
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"nnoremap <left> <nop>
+"nnoremap <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+"vnoremap <up> <nop>
+"vnoremap <down> <nop>
+"vnoremap <left> <nop>
+"vnoremap <right> <nop>
 
-set laststatus=2    " always show status line
-set ruler           " show 'ruler' in bottom-right (line, col, %)
+" fat fingers: map f1 to escape instead of help
+map <F1> <Esc>
+imap <F1> <Esc>
 
-" show tabs and trailing whitespace
-set list listchars=tab:»\ ,trail:·
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
 
-" set tabs to be 2 spaces by default
-set textwidth=0 tabstop=2 shiftwidth=2 softtabstop=2
-set smartindent expandtab
+" Languange-specific settings
+autocmd FileType ruby runtime ruby_mappings.vim
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType css setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType c setlocal tabstop=2 shiftwidth=2 softtabstop=2
+autocmd FileType javascript setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
+autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
 
-" insert key bindings: Ctrl-L for =>, Ctrl-K for ->
+" Rakefile and Gemfile are Ruby
+au BufRead,BufNewFile {Gemfile,Rakefile,config.ru} set ft=ruby
+
+" Launch the rocket
 imap <C-L> <SPACE>=><SPACE>
-imap <C-K> ->
 
-" comma or backslash as leader
-nmap , \
+" Relative line numbers
+function! g:ToggleNuMode()
+ if(&rnu == 1)
+   set nu
+ else
+   set rnu
+ endif
+endfunc
+map <silent> <Leader>rl :call g:ToggleNuMode()<CR>
 
-" bind captal-Y as 'yank to end of line'
-map Y y$
+" Tab completion
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc
 
-" bind g/ to bring up a git grep prompt
-nmap g/ :Ggrep<space>
-" bind g* to git grep the current word
-nmap g* :Ggrep <C-R><C-W>
-" bind gn and gp to traverse the quickfix pane
-nmap gn :cnext<CR>
-nmap gp :cprev<CR>
-" bind gq to close and gl to open the quickfix pane
-nmap gq :ccl<CR>
-nmap gl :cwindow<CR>>
+" vimrc
+map <silent> <Leader>con :e $MYVIMRC<CR>
+map <silent> <Leader>lcon :source $MYVIMRC<CR>
+
+" ctrlp
+map <silent> <Leader>t :CtrlP<CR>
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git\|tmp'
+
+" Command-T
+"map <silent> <Leader>ff :CommandT<CR>
+"map <silent> <Leader>t :CommandT<CR>
+"map <silent> <Leader>b :CommandTBuffer<CR>
+"map <silent> <Leader>tf :CommandTFlush<CR>
+
+map <Leader>rj :call VimuxRunCommand("clear; teaspoon " .bufname("%"))<CR>
+
+" NERDTree
+map <silent> <Leader>nt :NERDTreeToggle<CR>
+
+" vimux
+"map <Leader>rb :RunAllRubyTests<CR>
+map <Leader>rb :call VimuxRunCommand("clear; rspec " .bufname("%"))<CR>
+map <Leader>rc :RunRubyFocusedContext<CR>
+map <Leader>ri :VimuxInspectRunner<CR>
+map <Leader>rs :RunRubyFocusedTest<CR>
+map <Leader>rt :call VimuxRunCommand("clear; mix test")<CR>
+
+fun! <SID>StripTrailingWhitespaces()
+  let l = line(".")
+  let c = col(".")
+  %s/\s\+$//e
+  call cursor(l, c)
+endfun
+
+"autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+map <Leader>cw :call <SID>StripTrailingWhitespaces()<CR>
+
+" Highlight trailing whitespace
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd BufRead,InsertLeave * match ExtraWhitespace /\s\+$/
+highlight ExtraWhitespace ctermbg=red guibg=red
+autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+map <silent> <Leader>ws :highlight clear ExtraWhitespace<CR>
+
+" Highlight too-long lines
+"autocmd BufRead,InsertEnter,InsertLeave * 2match LineLengthError /\%126v.*/ asdfasdfas adfsasd fasdf asdf asdf asdfa sdf asdf asdf asd fasd fa sdf asdf asd fasd fasd f
+"highlight LineLengthError ctermbg=black guibg=black
+"autocmd ColorScheme * highlight LineLengthError ctermbg=black guibg=black
+
+" Fix for crontab -e
+autocmd filetype crontab setlocal nobackup nowritebackup
+
+" Status bar
+set laststatus=2
+set statusline=
+set statusline+=%<\                       " cut at start
+set statusline+=%2*[%n%H%M%R%W]%*\        " buffer number, and flags
+set statusline+=%-40f\                    " relative path
+set statusline+=%=                        " seperate between right- and left-aligned
+set statusline+=%1*%y%*%*\                " file type
+set statusline+=%10(L(%l/%L)%)\           " line
+set statusline+=%2(C(%v/125)%)\           " column
+set statusline+=%P                        " percentage of file
+
+" Open git command results in a quickfix window
 autocmd QuickFixCmdPost *grep* cwindow
 
-" trim trailing whitespace
-function TrimWhitespace()
-  %s/\s*$//
-  ''
+function! GitGrepWord()
+    cgetexpr system("git grep -n '" . expand("<cword>") . "'")
+      cwin
+        echo 'Number of matches: ' . len(getqflist())
 endfunction
-
-command -nargs=0 TrimWhitespace :call TrimWhitespace()
-nnoremap <silent> <Leader>W :TrimWhitespace<CR>
-nnoremap <silent> <Leader>N :EasyTree<CR>
-
-" themes
-let g:airline_powerline_fonts = 1
-colorscheme bp-light
-
-"" plugins and plugin options
-" " " " " "
-" CTRL-P
-" " " " " "
-
-" bring up ctrl-p file-finder with ctrl-f
-let g:ctrlp_map = '<c-f>'
-
-" fuzzy window controls: ctrl-j/k for history and ctrl-n/p for selection
-let g:ctrlp_prompt_mappings = {
-      \ 'PrtSelectMove("j")':   ['<c-n>', '<down>'],
-      \ 'PrtSelectMove("k")':   ['<c-p>', '<up>'],
-      \ 'PrtHistory(-1)':       ['<c-j>'],
-      \ 'PrtHistory(1)':        ['<c-k>']}
-
-" use git ls-files, if present, for speed
-let g:ctrlp_user_command = [
-      \ '.git',
-      \ 'cd %s && git ls-files . -co --exclude-standard',
-      \ 'find %s -type f']
+command! -nargs=0 GitGrepWord :call GitGrepWord()
+nnoremap <silent> <Leader>gw :GitGrepWord<CR>
