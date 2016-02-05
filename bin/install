@@ -10,7 +10,8 @@ class DotfileInstall
     "githelpers",
     "vimrc",
     "tmux.conf",
-    "vim"
+    "vim",
+    "emacs"
   ]
 
   attr_accessor :options
