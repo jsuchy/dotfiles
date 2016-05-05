@@ -1,6 +1,6 @@
 [user]
-  name  = Brian Pratt
-  email = brian@8thlight.com
+  name  = Jim Suchy
+  email = jsuchy@gmail.com
 
 [color]
   ui = auto
@@ -9,15 +9,9 @@
   default = current
 
 [alias]
-  aa    = add -A .
-  amend = commit --amend
-
   br    = branch
   ci    = commit
-  cm    = commit -m
-  cma   = commit -am
   co    = checkout
-  rh    = reset HEAD
 
   di    = diff
   dc    = diff --cached
@@ -29,5 +23,3 @@
   pop   = !git stash pop
   subs  = submodule update --init --recursive
   lg    = "!. ~/.githelpers && pretty_git_log"
-
-  checkpoint = commit -m "checkpoint"
