@@ -20,18 +20,18 @@ colorscheme solarized
 let mapleader=","
 
 " no arrow keys in normal and insert modes
-"nnoremap <up> <nop>
-"nnoremap <down> <nop>
-"nnoremap <left> <nop>
-"nnoremap <right> <nop>
-"inoremap <up> <nop>
-"inoremap <down> <nop>
-"inoremap <left> <nop>
-"inoremap <right> <nop>
-"vnoremap <up> <nop>
-"vnoremap <down> <nop>
-"vnoremap <left> <nop>
-"vnoremap <right> <nop>
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+vnoremap <up> <nop>
+vnoremap <down> <nop>
+vnoremap <left> <nop>
+vnoremap <right> <nop>
 
 " fat fingers: map f1 to escape instead of help
 map <F1> <Esc>
