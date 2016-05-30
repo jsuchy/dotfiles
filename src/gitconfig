@@ -9,6 +9,7 @@
   default = current
 
 [alias]
+  aa = add -A .
   br    = branch
   ci    = commit
   co    = checkout
