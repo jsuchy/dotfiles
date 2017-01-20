@@ -48,7 +48,7 @@ autocmd FileType html setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType c setlocal tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType javascript setlocal tabstop=4 shiftwidth=4 softtabstop=4
 autocmd BufNewFile,BufRead *.txt setlocal textwidth=78
-autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_us
+autocmd BufNewFile,BufRead *.txt setlocal spell spelllang=en_gb
 
 " Rakefile and Gemfile are Ruby
 au BufRead,BufNewFile {Gemfile,Rakefile,config.ru} set ft=ruby
@@ -91,7 +91,7 @@ map <silent> <Leader>nt :NERDTreeToggle<CR>
 
 " vimux
 "map <Leader>rb :RunAllRubyTests<CR>
-map <Leader>rb :call VimuxRunCommand("clear; rspec " .bufname("%"))<CR>
+map <Leader>rb :call VimuxRunCommand("clear; be rspec " .bufname("%"))<CR>
 map <Leader>rc :RunRubyFocusedContext<CR>
 map <Leader>ri :VimuxInspectRunner<CR>
 map <Leader>rs :RunRubyFocusedTest<CR>
